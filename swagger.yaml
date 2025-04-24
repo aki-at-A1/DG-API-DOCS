@@ -84,7 +84,7 @@ components:
                                 },
                             ]
                 compare_at_price:
-                    type: integer
+                    type: number
                     example: 32
                 product_vendor:
                     type: string
@@ -101,16 +101,20 @@ components:
                             url:
                                 type: string
                                 example: "dogojp.myshopify.com"
+                                description: URL của nền tảng
                             allow_sync:
                                 type: boolean
                                 example: true
+                                description: Cho phép đồng bộ
                             store_name:
                                 type: string
                                 example: "DogoJP"
+                                description: Tên cửa hàng
                             platform:
                                 type: string
                                 enum: ["shopify", ".."]
                                 example: "shopify"
+                                description: Nền tảng mà sản phẩm được bán
                             price:
                                 type: number
                                 example: 100000
@@ -165,16 +169,16 @@ paths:
                     | default_code | Mã nội bộ sản phẩm | string |  | 344564646 |
                     | hs_code | Mã HS sản phẩm | string |  | 232232 |
                     | categ_id | ID danh mục sản phẩm trong Odoo | number |  | 1 |
-                    | seller_ids | Danh sách nhà cung cấp và giá mua sẽ được cập nhật vào tab purchase trong sản phẩm. Cấu trúc 1 item trong mảng này như sau: ```[rpc_command, record_id, values]```. Trong đó: <br> - **rpc_command**: 0-create,1-update, 2-delete, 3-unlink, 4-link, 5-clear, 6-set; <br> - **record_id**: mã id của record trên Odoo. <br> - **values**: object chứa các trường cần cập nhật hoặc để 0 nếu không có cập nhật mới. <br>   | array |  | - **Xoá các data cũ:** [5, 0, 0] <br> - **Tạo mới record:** [0,0, {"name": 194254, "min_qty": 10, "price": 110}] |
+                    | seller_ids | Danh sách nhà cung cấp và giá mua sẽ được cập nhật vào tab purchase trong sản phẩm. Cấu trúc 1 item trong mảng này như sau: ```[rpc_command, record_id, values]```. Trong đó: <br> - **rpc_command**: 0-create,1-update, 2-delete, 3-unlink, 4-link, 5-clear, 6-set; <br> - **record_id**: mã id của record trên Odoo. <br> - **values**: object chứa các trường cần cập nhật trong product.supplierinfo hoặc để 0 nếu không có cập nhật mới. <br>  | array |  | - **Xoá các data cũ:** [5, 0, 0] <br> - **Tạo mới record:** [0,0, {"partner_id": 194254, "min_qty": 10, "price": 110}] |
                     | compare_at_price | Giá so sánh | integer |  | |
                     | product_vendor | Nhà cung cấp sản phẩm | string |  | |
                     | product_tags | Tag sản phẩm | string |  | |
                     | product_price_platform_ids | Danh sách các nền tảng và giá sản phẩm | array |  | |
-                    | product_price_platform_ids.url | URL của nền tảng | string |  | | 
-                    | product_price_platform_ids.allow_sync | Cho phép đồng bộ giá | boolean |  | |
-                    | product_price_platform_ids.store_name | Tên cửa hàng | string |  | |
-                    | product_price_platform_ids.platform | Nền tảng | string |  | |
-                    | product_price_platform_ids.price | Giá bán của sản phẩm trên nền tảng | number |  | |
+                    | product_price_platform_ids.url | URL của nền tảng | string |  | dogojp.myshopify.com | 
+                    | product_price_platform_ids.allow_sync | Cho phép đồng bộ giá | boolean |  | true |
+                    | product_price_platform_ids.store_name | Tên cửa hàng | string |  | dogojp |
+                    | product_price_platform_ids.platform | Nền tảng | string |  | shopify|
+                    | product_price_platform_ids.price | Giá bán của sản phẩm trên nền tảng | number |  | 100000  |
 
                 content:
                     application/json:
