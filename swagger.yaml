@@ -170,9 +170,9 @@ paths:
                     | hs_code | Mã HS sản phẩm | string |  | 232232 |
                     | categ_id | ID danh mục sản phẩm trong Odoo | number |  | 1 |
                     | seller_ids | Danh sách nhà cung cấp và giá mua sẽ được cập nhật vào tab purchase trong sản phẩm. Cấu trúc 1 item trong mảng này như sau: ```[rpc_command, record_id, values]```. Trong đó: <br> - **rpc_command**: 0-create,1-update, 2-delete, 3-unlink, 4-link, 5-clear, 6-set; <br> - **record_id**: mã id của record trên Odoo. <br> - **values**: object chứa các trường cần cập nhật trong product.supplierinfo hoặc để 0 nếu không có cập nhật mới. <br>  | array |  | - **Xoá các data cũ:** [5, 0, 0] <br> - **Tạo mới record:** [0,0, {"partner_id": 194254, "min_qty": 10, "price": 110}] |
-                    | compare_at_price | Giá so sánh | integer |  | |
-                    | product_vendor | Nhà cung cấp sản phẩm | string |  | |
-                    | product_tags | Tag sản phẩm | string |  | |
+                    | compare_at_price | Giá so sánh | number |  | 2500 |
+                    | product_vendor | Nhà cung cấp sản phẩm | string |  | "A1Vendor" |
+                    | product_tags | Tag sản phẩm | string |  | "On sale, Test Tag"|
                     | product_price_platform_ids | Danh sách các nền tảng và giá sản phẩm | array |  | |
                     | product_price_platform_ids.url | URL của nền tảng | string |  | dogojp.myshopify.com | 
                     | product_price_platform_ids.allow_sync | Cho phép đồng bộ giá | boolean |  | true |
