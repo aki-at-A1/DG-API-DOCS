@@ -133,7 +133,12 @@ paths:
             summary: Tạo mới/ Cập nhật sản phẩm
             description: |
                 Sử dụng API này để tạo sản phẩm hoặc cập nhật sản phẩm trong Odoo thông qua mã barcode.
-            parameters: []
+            parameters:
+                - in: header
+                  name: X-Odoo-dbfilter
+                  description: Chọn database để thực hiện thao tác
+                  schema:
+                      type: string
             requestBody:
                 required: true
                 description: |
