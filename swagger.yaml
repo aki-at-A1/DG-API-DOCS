@@ -19,6 +19,7 @@ components:
             required:
                 - barcode
                 - name
+                - detailed_type
             properties:
                 barcode:
                     type: string
@@ -26,6 +27,9 @@ components:
                 name:
                     type: string
                     example: "000 Test post japan 24"
+                detailed_type:
+                    type: string
+                    example: "product"
                 weight:
                     type: number
                     format: float
@@ -68,11 +72,19 @@ components:
                     type: number
                     description: ID danh mục sản phẩm trong Odoo
                     example: 1
+                attribute_line_ids:
+                    type: array
+                    description: Danh sách các thuộc tính biến thể của sản phẩm.
+                    items:
+                        example:
+                            {
+                                "attribute_id": 2,
+                                "value_ids": ["Black" , "White"]
+                            }
                 seller_ids:
                     type: array
                     description: Danh sách nhà cung cấp và giá mua
                     items:
-                        type: array
                         example:
                             [
                                 0,
@@ -115,6 +127,10 @@ components:
                                 enum: ["shopify", ".."]
                                 example: "shopify"
                                 description: Nền tảng mà sản phẩm được bán
+                            platform_id:
+                                type: number
+                                example: 1
+                                description: ID của Platform phục vụ việc tìm Ecommerce Instance trên Odoo
                             price:
                                 type: number
                                 example: 100000
@@ -139,10 +155,23 @@ paths:
                 Sử dụng API này để tạo sản phẩm hoặc cập nhật sản phẩm trong Odoo thông qua mã barcode.
             parameters:
                 - in: header
+                  required: true
+                  name: X-Odoo-Api-Key
+                  description: Odoo Api Key nằm ở Settings > API Information > API Configuration
+                  schema:
+                      type: string
+                - in: header
+                  required: true
                   name: X-Odoo-dbfilter
                   description: Chọn database để thực hiện thao tác
                   schema:
                       type: string
+                - in: header
+                  name: Content-Type
+                  description: Content-Type
+                  schema:
+                      type: string
+                      example: application/json
             requestBody:
                 required: true
                 description: |
@@ -158,6 +187,7 @@ paths:
                     | --- | --- | --- | --- | --- |
                     | barcode | Mã vạch sản phẩm | string | ✅ | BARCODE-123 |
                     | name | Tên sản phẩm | string | ✅ | 000 Test post japan 24 |
+                    | detailed_type | Loại sản phẩm | string | ✅ | - **Storable Product**: product <br> - **Service:** service <br> - **Consumable:** consu | 
                     | weight | Cân nặng sản phẩm | number |  | 350.0 |
                     | length | Chiều dài sản phẩm | number |  | 150.0 |
                     | width | Chiều rộng sản phẩm | number |  | 23 |
@@ -169,21 +199,24 @@ paths:
                     | default_code | Mã nội bộ sản phẩm | string |  | 344564646 |
                     | hs_code | Mã HS sản phẩm | string |  | 232232 |
                     | categ_id | ID danh mục sản phẩm trong Odoo | number |  | 1 |
+                    | attribute_line_ids | Danh sách các thuộc tính biến thể của sản phẩm. Cấu trúc item trong mảng này như sau: **[<br>`{"attribute_id": 2, "value_ids": ["val_name_1", "val_name_2"]}`,<br>`{"attribute_id": 3, "value_ids": ["val_name_3", "val_name_4"]}`<br>]**. Trong đó: <br> - **attribute_id**: ID thuộc tính ở Odoo <br> - **value_ids**: danh sách tên các thuộc tính trên Odoo. | array |  | **[{"attribute_id": 2, "value_ids": ["Black" , "White"]}]** |
                     | seller_ids | Danh sách nhà cung cấp và giá mua sẽ được cập nhật vào tab purchase trong sản phẩm. Cấu trúc 1 item trong mảng này như sau: ```[rpc_command, record_id, values]```. Trong đó: <br> - **rpc_command**: 0-create,1-update, 2-delete, 3-unlink, 4-link, 5-clear, 6-set; <br> - **record_id**: mã id của record trên Odoo. <br> - **values**: object chứa các trường cần cập nhật trong product.supplierinfo hoặc để 0 nếu không có cập nhật mới. <br>  | array |  | - **Xoá các data cũ:** [5, 0, 0] <br> - **Tạo mới record:** [0,0, {"partner_id": 194254, "min_qty": 10, "price": 110}] |
                     | compare_at_price | Giá so sánh | number |  | 2500 |
                     | product_vendor | Nhà cung cấp sản phẩm | string |  | "A1Vendor" |
                     | product_tags | Tag sản phẩm | string |  | "On sale, Test Tag"|
+                    | shopify_release_date | Ngày phát hành sản phẩm trên Shopify | datetime |  | "2025-04-05 14:30:00" |
                     | product_price_platform_ids | Danh sách các nền tảng và giá sản phẩm | array |  | |
                     | product_price_platform_ids.url | URL của nền tảng | string |  | dogojp.myshopify.com | 
                     | product_price_platform_ids.allow_sync | Cho phép đồng bộ giá | boolean |  | true |
                     | product_price_platform_ids.store_name | Tên cửa hàng | string |  | dogojp |
-                    | product_price_platform_ids.platform | Nền tảng | string |  | shopify|
+                    | product_price_platform_ids.platform | Nền tảng | string |  | shopify/magento |
+                    | product_price_platform_ids.platform_id | ID của Platform phục vụ việc tìm Ecommerce Instance trên Odoo | number |  | 1 |
                     | product_price_platform_ids.price | Giá bán của sản phẩm trên nền tảng | number |  | 100000  |
 
                 content:
                     application/json:
                         schema:
-                            $ref: "#/components/schemas/ProductCreatePayload"
+                          $ref: "#/components/schemas/ProductCreatePayload"
 
             responses:
                 "200":
