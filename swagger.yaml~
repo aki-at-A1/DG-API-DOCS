@@ -19,7 +19,6 @@ components:
             required:
                 - barcode
                 - name
-                - detailed_type
             properties:
                 barcode:
                     type: string
