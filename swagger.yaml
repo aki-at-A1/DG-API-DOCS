@@ -54,6 +54,10 @@ components:
                     type: number
                     description: Giá nhập
                     example: "58"
+                image_1920:
+                    type: string
+                    description: Hình ảnh sản phẩm với dạng base64 data (https://www.base64-image.de/). Chú ý bỏ phần "data:image/webp;base64" xem phần ví dụ
+                    example: "data:image/webp;base64,UklGRqKPAQBXRUJQVlA4IJaPAQAw0wW... => ,UklGRqKPAQBXRUJQVlA4IJaPAQAw0wW..."
                 extra_image_src:
                     type: string
                     description: URL nhiều ảnh phân cách bởi dấu phẩy
@@ -194,6 +198,7 @@ paths:
                     | height | Chiều cao sản phẩm | number |  | 180.0 |
                     | description | Mô tả sản phẩm | string |  | ```<p>Mô tả sản phẩm bằng HTML</p>``` |
                     | standard_price | Giá nhập sản phẩm | string |  | 58 |
+                    | image_1920 | Hình ảnh sản phẩm với dạng base64 data (https://www.base64-image.de/) | base64 string |  | ",UklGRqKPAQBXRUJQVlA4IJaPAQAw0wW..." ||
                     | extra_image_src | URL nhiều ảnh phân cách bởi dấu phẩy | string |  | "https://s3...jpg, https://genk...jpg" ||
                     | davp_qty | Số lượng sản phẩm | integer |  | 48 |
                     | default_code | Mã nội bộ sản phẩm | string |  | 344564646 |
