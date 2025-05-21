@@ -18,10 +18,15 @@ components:
             type: object
             required:
                 - barcode
+                - default_code
                 - name
                 - detailed_type
             properties:
                 barcode:
+                    type: string
+                    example: "344564646"
+                default_code:
+                    description: Mã nội bộ (internal Reference)
                     type: string
                     example: "344564646"
                 name:
@@ -55,7 +60,7 @@ components:
                     description: Giá nhập
                     example: "58"
                 image_1920:
-                    type: base64 string
+                    type: string
                     description: Hình ảnh sản phẩm với dạng base64 data (https://www.base64-image.de/). Chú ý bỏ phần "data:image/webp;base64" xem phần ví dụ
                     example: "data:image/webp;base64,UklGRqKPAQBXRUJQVlA4IJaPAQAw0wW... => ,UklGRqKPAQBXRUJQVlA4IJaPAQAw0wW..."
                 extra_image_src:
@@ -65,10 +70,6 @@ components:
                 davp_qty:
                     type: integer
                     example: 48
-                default_code:
-                    description: Mã nội bộ (internal Reference)
-                    type: string
-                    example: "344564646"
                 hs_code:
                     type: string
                     example: "232232"
