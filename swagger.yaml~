@@ -51,6 +51,12 @@ components:
                     type: number
                     format: float
                     example: 180.0
+                | volume | Thể tích sản phẩm (m3) | number |  | 500.0 |
+                volume:
+                    type: number
+                    format: float
+                    example: 500.0
+
                 description:
                     type: string
                     description: Mô tả HTML
@@ -72,7 +78,12 @@ components:
                     example: 48
                 hs_code:
                     type: string
+                    description: HS code của sản phẩm
                     example: "232232"
+                country_of_origin:
+                    type: number
+                    description: ID của Origin of Goods trên sản phẩm (mặc định Japan là 113)
+                    example: 113
                 categ_id:
                     type: number
                     description: ID danh mục sản phẩm trong Odoo
@@ -98,6 +109,7 @@ components:
                                     "partner_id": 194254,
                                     "min_qty": 10,
                                     "price": 110,
+                                    "vendor_url": "https://abc.com",
                                 },
                             ]
                 compare_at_price:
@@ -191,22 +203,24 @@ paths:
                     | Trường |Mô tả | Kiểu dữ liệu | Bắt buộc | Dữ liệu mẫu |
                     | --- | --- | --- | --- | --- |
                     | barcode | Mã vạch sản phẩm | string | ✅ | BARCODE-123 |
+                    | default_code | Mã nội bộ sản phẩm | string | ✅ | 344564646 |
                     | name | Tên sản phẩm | string | ✅ | 000 Test post japan 24 |
                     | detailed_type | Loại sản phẩm | string | ✅ | - **Storable Product**: product <br> - **Service:** service <br> - **Consumable:** consu | 
-                    | weight | Cân nặng sản phẩm | number |  | 350.0 |
+                    | weight | Cân nặng sản phẩm (g) | number |  | 350.0 |
                     | length | Chiều dài sản phẩm | number |  | 150.0 |
                     | width | Chiều rộng sản phẩm | number |  | 23 |
                     | height | Chiều cao sản phẩm | number |  | 180.0 |
+                    | volume | Thể tích sản phẩm (m3) | number |  | 500.0 |
                     | description | Mô tả sản phẩm | string |  | ```<p>Mô tả sản phẩm bằng HTML</p>``` |
                     | standard_price | Giá nhập sản phẩm | string |  | 58 |
                     | image_1920 | Hình ảnh sản phẩm với dạng base64 data (https://www.base64-image.de/) | base64 string |  | ",UklGRqKPAQBXRUJQVlA4IJaPAQAw0wW..." ||
                     | extra_image_src | URL nhiều ảnh phân cách bởi dấu phẩy | string |  | "https://s3...jpg, https://genk...jpg" ||
                     | davp_qty | Số lượng sản phẩm | integer |  | 48 |
-                    | default_code | Mã nội bộ sản phẩm | string |  | 344564646 |
                     | hs_code | Mã HS sản phẩm | string |  | 232232 |
+                    | country_of_origin | ID của Origin of Goods trên sản phẩm (mặc định Japan là 113) | number |  | 113 |
                     | categ_id | ID danh mục sản phẩm trong Odoo | number |  | 1 |
                     | attribute_line_ids | Danh sách các thuộc tính biến thể của sản phẩm. Cấu trúc item trong mảng này như sau: **[<br>`{"attribute_id": 2, "value_ids": ["val_name_1", "val_name_2"]}`,<br>`{"attribute_id": 3, "value_ids": ["val_name_3", "val_name_4"]}`<br>]**. Trong đó: <br> - **attribute_id**: ID thuộc tính ở Odoo <br> - **value_ids**: danh sách tên các thuộc tính trên Odoo. | array |  | **[{"attribute_id": 2, "value_ids": ["Black" , "White"]}]** |
-                    | seller_ids | Danh sách nhà cung cấp và giá mua sẽ được cập nhật vào tab purchase trong sản phẩm. Cấu trúc 1 item trong mảng này như sau: ```[rpc_command, record_id, values]```. Trong đó: <br> - **rpc_command**: 0-create,1-update, 2-delete, 3-unlink, 4-link, 5-clear, 6-set; <br> - **record_id**: mã id của record trên Odoo. <br> - **values**: object chứa các trường cần cập nhật trong product.supplierinfo hoặc để 0 nếu không có cập nhật mới. <br>  | array |  | - **Xoá các data cũ:** [5, 0, 0] <br> - **Tạo mới record:** [0,0, {"partner_id": 194254, "min_qty": 10, "price": 110}] |
+                    | seller_ids | Danh sách nhà cung cấp và giá mua sẽ được cập nhật vào tab purchase trong sản phẩm. Cấu trúc 1 item trong mảng này như sau: ```[rpc_command, record_id, values]```. Trong đó: <br> - **rpc_command**: 0-create,1-update, 2-delete, 3-unlink, 4-link, 5-clear, 6-set; <br> - **record_id**: mã id của record trên Odoo. <br> - **values**: object chứa các trường cần cập nhật trong product.supplierinfo hoặc để 0 nếu không có cập nhật mới. <br>  | array |  | - **Xoá các data cũ:** [5, 0, 0] <br> - **Tạo mới record:** [0,0, {"partner_id": 194254, "min_qty": 10, "price": 110, "vendor_url": "https://abc.com"}}] |
                     | compare_at_price | Giá so sánh | number |  | 2500 |
                     | product_vendor | Nhà cung cấp sản phẩm | string |  | "A1Vendor" |
                     | product_tags | Tag sản phẩm | string |  | "On sale, Test Tag"|
